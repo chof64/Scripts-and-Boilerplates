@@ -1,0 +1,57 @@
+#! /bin/bash
+
+echo "Brave Browser Convinence Installation Script."
+echo "By chof64."
+
+types="Choose your Brave channel."
+
+channels=("Release" "Beta" "Nightly")
+
+select channel in "${channels[@]}"; do
+    case $channel in
+        "Release")
+            echo "Installing Release Channel version."
+
+            sudo apt install apt-transport-https curl
+            sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+            echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+            sudo apt update
+            sudo apt install brave-browser
+            # Reference: https://brave.com/linux/#release-channel-installation
+
+            break 
+            ;;
+
+        "Beta")
+            echo "Installing Beta Channel version."
+
+            sudo apt install apt-transport-https curl
+            sudo curl -fsSLo /usr/share/keyrings/brave-browser-beta-archive-keyring.gpg https://brave-browser-apt-beta.s3.brave.com/brave-browser-beta-archive-keyring.gpg
+            echo "deb [signed-by=/usr/share/keyrings/brave-browser-beta-archive-keyring.gpg arch=amd64] https://brave-browser-apt-beta.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-beta.list
+            sudo apt update
+            sudo apt install brave-browser-beta
+            # Reference: https://brave.com/linux/#beta-channel-installation
+
+            break
+            ;;
+        
+        "Nightly")
+            echo "Installing Nightly Channel version."
+
+            sudo apt install apt-transport-https curl
+            sudo curl -fsSLo /usr/share/keyrings/brave-browser-nightly-archive-keyring.gpg https://brave-browser-apt-nightly.s3.brave.com/brave-browser-nightly-archive-keyring.gpg
+            echo "deb [signed-by=/usr/share/keyrings/brave-browser-nightly-archive-keyring.gpg arch=amd64] https://brave-browser-apt-nightly.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-nightly.list
+            sudo apt update
+            sudo apt install brave-browser-nightly
+            # Reference: https://brave.com/linux/#nightly-channel-installation
+
+            break
+            ;;
+
+        "Quit")
+            echo "User requested exit"
+            exit
+            ;;
+            *) echo "Invalid option $REPLY";;
+    esac
+done
